@@ -150,6 +150,8 @@
 <div id="root">
   <div class="shell">
 
+    <div class="auth-loading" id="authLoading" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:100;color:var(--text-dim);font-size:13px;">Memuat...</div>
+
     <!-- AUTH -->
     <div class="auth" id="authScreen">
       <div class="auth-brand">
@@ -372,6 +374,7 @@
   });
 
   onAuthStateChanged(auth, (user)=>{
+    document.getElementById('authLoading').style.display = 'none';
     if(unsubUser){ unsubUser(); unsubUser = null; }
     if(unsubChat){ unsubChat(); unsubChat = null; }
     if(user){
