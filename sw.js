@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sanngames-v2';
+const CACHE_NAME = 'sanngames-v3';
 const APP_SHELL = [
   './',
   './index.html',
@@ -13,7 +13,11 @@ const APP_SHELL = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL))
+    caches.open(CACHE_NAME).then((cache) =>
+      Promise.allSettled(APP_SHELL.map((url) => cache.add(url).catch((err) => {
+        console.log('SW precache gagal untuk:', url, err);
+      })))
+    )
   );
   self.skipWaiting();
 });
@@ -35,3 +39,9 @@ self.addEventListener('fetch', (event) => {
           const clone = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         }
+        return response;
+      }).catch(() => cached);
+      return cached || networkFetch;
+    })
+  );
+});
