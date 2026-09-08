@@ -1,7 +1,10 @@
-const CACHE_NAME = 'sanngames-v1';
+const CACHE_NAME = 'sanngames-v2';
 const APP_SHELL = [
   './',
   './index.html',
+  'https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js',
+  'https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js',
+  'https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js',
   'avatars/avatar1.png','avatars/avatar2.png','avatars/avatar3.png','avatars/avatar4.png',
   'avatars/avatar5.png','avatars/avatar6.png','avatars/avatar7.png','avatars/avatar8.png',
   'borders/border1.png','borders/border2.png','borders/border3.png','borders/border4.png',
@@ -32,9 +35,3 @@ self.addEventListener('fetch', (event) => {
           const clone = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         }
-        return response;
-      }).catch(() => cached);
-      return cached || networkFetch;
-    })
-  );
-});
